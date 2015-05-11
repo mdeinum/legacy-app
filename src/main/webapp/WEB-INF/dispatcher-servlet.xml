@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="newUserController" class="nl.conspect.legacy.web.UserController">
+        <constructor-arg ref="userService"/>
+        <property name="commandName" value="user" />
+        <property name="commandClass" value="nl.conspect.legacy.web.NewUserRegistrationForm" />
+        <property name="validateOnBinding" value="true"/>
+        <property name="validator">
+            <bean class="nl.conspect.legacy.domain.UserValidator"/>
+        </property>
+        <property name="formView" value="newuser" />
+        <property name="successView" value="newuser-success" />
+    </bean>
+
+    <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="defaultHandler" ref="defaultController" />
+        <property name="mappings">
+            <props>
+                <prop key="/">indexController</prop>
+                <prop key="/newuser">newUserController</prop>
+                <prop key="/login">loginController</prop>
+                <prop key="/logout">logoutController</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="defaultController" class="org.springframework.web.servlet.mvc.UrlFilenameViewController" />
+
+    <bean id="indexController" class="org.springframework.web.servlet.mvc.ParameterizableViewController">
+        <property name="viewName" value="index" />
+    </bean>
+
+    <bean id="loginController" class="nl.conspect.legacy.web.LoginController">
+        <constructor-arg ref="userService" />
+    </bean>
+
+    <bean id="logoutController" class="nl.conspect.legacy.web.LogoutController" />
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/views/" />
+        <property name="suffix" value=".jsp" />
+    </bean>
+
+    <bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+        <property name="useCodeAsDefaultMessage" value="true" />
+        <property name="basename" value="WEB-INF/messages" />
+    </bean>
+
+</beans>
