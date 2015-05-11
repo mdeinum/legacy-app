@@ -17,6 +17,7 @@
 package nl.conspect.legacy;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,19 +25,68 @@ import java.net.Socket;
 /**
  * Created by marten on 17-04-15.
  */
-public class RemoteSystemEmulator {
+public class RemoteSystemEmulator implements Runnable {
+
+    private volatile boolean running = false;
+    private ServerSocket server;
+    private volatile String received = null;
+    private Thread emulatorThread;
 
     public static void main(String[] args) throws Exception {
-        ServerSocket server = new ServerSocket(2345);
-        Socket connection = server.accept();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        RemoteSystemEmulator emulator = new RemoteSystemEmulator();
+        emulator.start();
+    }
 
-        while (true) {
-            String received = reader.readLine();
-            if (received != null) {
-                System.out.println("Received: " + received);
+    public void start() throws IOException {
+        this.server = new ServerSocket(2345);
+        this.server.setSoTimeout(500);
+        this.emulatorThread = new Thread(this);
+        this.running = true;
+        this.emulatorThread.start();
+
+    }
+
+    public void stop() throws IOException {
+        if (this.server != null) {
+            this.running = false;
+            this.server.close();
+        }
+    }
+
+    public String getReceived() {
+        return this.received;
+    }
+
+    public void run() {
+        Socket connection = null;
+        while (this.running) {
+            try {
+                connection = this.server.accept();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                this.received = reader.readLine();
+                System.out.println("Received: " + this.received);
+            } catch (IOException e) {
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e1) {
+                    // Empty on purpose
+                }
             }
-            Thread.sleep(50);
+        }
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (IOException e) {
+                // Empty on purpose
+            }
+        }
+
+        if (server != null) {
+            try {
+                server.close();
+            } catch (IOException e) {
+                // Empty on purpose
+            }
         }
     }
 }
