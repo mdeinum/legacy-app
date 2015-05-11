@@ -26,15 +26,6 @@
         </layout>
     </appender>
 
-    <appender name="file" class="org.apache.log4j.FileAppender">
-        <param name="file" value="/log/mylogfile.log" />
-        <param name="append" value="false" />
-        <param name="threshold" value="debug" />
-        <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d [%15.15t] %-5p %30.30c %x - %m%n" />
-        </layout>
-    </appender>
-
     <logger name="org.springframework">
         <level value="debug" />
     </logger>
@@ -42,6 +33,5 @@
     <root>
         <priority value="info" />
         <appender-ref ref="console" />
-        <appender-ref ref="file" />
     </root>
 </log4j:configuration>
