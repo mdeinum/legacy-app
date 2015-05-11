@@ -25,6 +25,5 @@ public interface UserService {
 
     void save(User user);
     void update(User user);
-    void remove(long id);
     User login(String username, String password);
 }

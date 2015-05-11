@@ -86,13 +86,6 @@ public class UserServiceImpl implements UserService {
         synchronize(user);
     }
 
-    public void remove(long id) {
-        User u = userRepository.find(id);
-        if (u != null ) {
-            userRepository.remove(u);
-        }
-    }
-
     public User login(String username, String password) {
         User user = userRepository.findWithUsername(username);
         if (user != null && user.getPassword().equals(password)) {
