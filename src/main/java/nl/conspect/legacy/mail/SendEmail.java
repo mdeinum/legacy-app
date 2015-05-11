@@ -14,12 +14,34 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.domain;
+package nl.conspect.legacy.mail;
+
+import java.io.Serializable;
 
 /**
  * @author marten
  */
-public class Order {
+public class SendEmail implements Serializable {
 
-    private User user;
+    private final String subject;
+    private final String recipient;
+    private final String body;
+
+    public SendEmail(String subject, String recipient, String body) {
+        this.subject = subject;
+        this.recipient = recipient;
+        this.body = body;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
 }

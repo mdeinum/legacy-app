@@ -20,7 +20,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="nl.conspect.legacy.domain.User" table="USER">
+    <class name="nl.conspect.legacy.user.User" table="USER">
         <id name="id" type="long" column="id">
             <generator class="native" />
         </id>

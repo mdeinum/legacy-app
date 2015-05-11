@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.web;
+package nl.conspect.legacy.user.web;
 
-import nl.conspect.legacy.domain.User;
-import nl.conspect.legacy.service.UserService;
+import nl.conspect.legacy.user.User;
+import nl.conspect.legacy.user.UserService;
 import org.springframework.web.servlet.mvc.SimpleFormController;
 
 /**

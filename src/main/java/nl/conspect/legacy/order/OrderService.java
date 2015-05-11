@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.service;
+package nl.conspect.legacy.order;
 
 /**
  * Created by marten on 28-04-15.
  */
-public interface PaymentService {
+public interface OrderService {
 }

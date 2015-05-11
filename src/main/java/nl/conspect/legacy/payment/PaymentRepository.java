@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.repository;
+package nl.conspect.legacy.payment;
 
 /**
  * @author marten

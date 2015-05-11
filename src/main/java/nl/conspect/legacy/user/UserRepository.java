@@ -14,35 +14,19 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.service.impl;
-
-import java.io.Serializable;
+package nl.conspect.legacy.user;
 
 /**
- * @author marten
+ * Created by marten on 17-04-15.
  */
-public class SendEmail implements Serializable {
+interface UserRepository {
 
-    private final String subject;
-    private final String recipient;
-    private final String body;
+   void save(User user);
+
+   User find(long id);
+   User findWithUsername(String username);
+
+   void remove(User user);
 
 
-    public SendEmail(String subject, String recipient, String body) {
-        this.subject = subject;
-        this.recipient = recipient;
-        this.body = body;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public String getRecipient() {
-        return recipient;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
 }

@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.domain;
+package nl.conspect.legacy.user;
 
 /**
- * @author marten
+ * Created by marten on 17-04-15.
  */
-public class Payment {
+public interface UserService {
 
-    private User user;
-    private Order order;
+    void save(User user);
+    void update(User user);
+    User login(String username, String password);
 }

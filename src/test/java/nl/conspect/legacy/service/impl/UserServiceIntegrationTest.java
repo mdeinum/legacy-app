@@ -19,8 +19,8 @@ package nl.conspect.legacy.service.impl;
 import com.icegreen.greenmail.util.GreenMail;
 import com.icegreen.greenmail.util.ServerSetup;
 import nl.conspect.legacy.RemoteSystemEmulator;
-import nl.conspect.legacy.domain.User;
-import nl.conspect.legacy.service.UserService;
+import nl.conspect.legacy.user.User;
+import nl.conspect.legacy.user.UserService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -79,7 +79,7 @@ public class UserServiceIntegrationTest extends AbstractTransactionalJUnit4Sprin
         assertEquals(1, mimeMessages.length);
         MimeMessage msg = mimeMessages[0];
         assertEquals("New User", msg.getSubject());
-        assertEquals("Welcome new user: Foo Bar", msg.getContent());
+        assertEquals("Welcome new user: Foo Bar\r\n", msg.getContent());
 
         assertEquals("username:foobar|email:foo@somewhere.org$", emulator.getReceived());
     }

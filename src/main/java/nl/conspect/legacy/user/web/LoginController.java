@@ -14,26 +14,39 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.web;
+package nl.conspect.legacy.user.web;
 
+import nl.conspect.legacy.user.User;
+import nl.conspect.legacy.user.UserService;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
+import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.Collections;
 
 /**
  * @author marten
  */
-public class LogoutController extends AbstractController {
+public class LoginController extends AbstractController {
+
+    private final UserService userService;
+
+    public LoginController(UserService userService) {
+        this.userService = userService;
+    }
 
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
+        String username = ServletRequestUtils.getStringParameter(request, "j_username");
+        String password = ServletRequestUtils.getStringParameter(request, "j_password");
+
+        User user = userService.login(username, password);
+        if (user != null) {
+            WebUtils.setSessionAttribute(request, "currentUser", user);
+            return new ModelAndView("account");
         }
-        return new ModelAndView("redirect:/app/index", Collections.singletonMap("msg", "Logout successful."));
+        return new ModelAndView("index", Collections.singletonMap("msg", "Wrong username/password combination."));
     }
 }

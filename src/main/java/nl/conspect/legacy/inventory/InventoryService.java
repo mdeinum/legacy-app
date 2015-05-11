@@ -14,21 +14,10 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.repository;
-
-import nl.conspect.legacy.domain.User;
+package nl.conspect.legacy.inventory;
 
 /**
- * Created by marten on 17-04-15.
+ * @author Marten Deinum
  */
-public interface UserRepository {
-
-   void save(User user);
-
-   User find(long id);
-   User findWithUsername(String username);
-
-   void remove(User user);
-
-
+public interface InventoryService {
 }

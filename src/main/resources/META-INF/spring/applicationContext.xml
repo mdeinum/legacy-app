@@ -5,21 +5,21 @@
 
     <import resource="classpath:/META-INF/spring/infrastructure-context.xml" />
 
-    <bean id="userRepository" class="nl.conspect.legacy.repository.impl.HibernateUserRepositoryImpl">
+    <bean id="userRepository" class="nl.conspect.legacy.user.HibernateUserRepositoryImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
-    <bean id="mailService" class="nl.conspect.legacy.service.impl.SimpleMailService">
+    <bean id="mailService" class="nl.conspect.legacy.mail.SimpleMailService">
 
     </bean>
 
-    <bean id="remoteSystemSynchronizer" class="nl.conspect.legacy.service.impl.RemoteSystemSynchronizer"></bean>
+    <bean id="remoteSystemSynchronizer" class="nl.conspect.legacy.sync.RemoteSystemSynchronizer"></bean>
 
     <bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="proxyInterfaces" value="nl.conspect.legacy.service.UserService" />
+        <property name="proxyInterfaces" value="nl.conspect.legacy.user.UserService" />
         <property name="transactionManager" ref="transactionManager" />
         <property name="target">
-            <bean class="nl.conspect.legacy.service.impl.UserServiceImpl">
+            <bean class="nl.conspect.legacy.user.UserServiceImpl">
                 <constructor-arg ref="mailService"/>
                 <constructor-arg ref="remoteSystemSynchronizer" />
                 <constructor-arg ref="userRepository" />

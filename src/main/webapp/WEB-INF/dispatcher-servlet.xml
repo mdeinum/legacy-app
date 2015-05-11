@@ -4,13 +4,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="newUserController" class="nl.conspect.legacy.web.UserController">
+    <bean id="newUserController" class="nl.conspect.legacy.user.web.UserController">
         <constructor-arg ref="userService"/>
         <property name="commandName" value="user" />
-        <property name="commandClass" value="nl.conspect.legacy.web.NewUserRegistrationForm" />
+        <property name="commandClass" value="nl.conspect.legacy.user.web.NewUserRegistrationForm" />
         <property name="validateOnBinding" value="true"/>
         <property name="validator">
-            <bean class="nl.conspect.legacy.domain.UserValidator"/>
+            <bean class="nl.conspect.legacy.user.UserValidator"/>
         </property>
         <property name="formView" value="newuser" />
         <property name="successView" value="newuser-success" />
@@ -34,11 +34,11 @@
         <property name="viewName" value="index" />
     </bean>
 
-    <bean id="loginController" class="nl.conspect.legacy.web.LoginController">
+    <bean id="loginController" class="nl.conspect.legacy.user.web.LoginController">
         <constructor-arg ref="userService" />
     </bean>
 
-    <bean id="logoutController" class="nl.conspect.legacy.web.LogoutController" />
+    <bean id="logoutController" class="nl.conspect.legacy.user.web.LogoutController" />
 
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/views/" />

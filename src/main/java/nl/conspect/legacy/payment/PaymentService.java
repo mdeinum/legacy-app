@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.service;
-
-import nl.conspect.legacy.service.impl.SendEmail;
+package nl.conspect.legacy.payment;
 
 /**
- * @author marten
+ * Created by marten on 28-04-15.
  */
-public interface MailService {
-    void sendEmail(SendEmail sendEmail);
+public interface PaymentService {
 }

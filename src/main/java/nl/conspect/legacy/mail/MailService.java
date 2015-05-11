@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.service;
+package nl.conspect.legacy.mail;
 
 /**
- * @author Marten Deinum
+ * @author marten
  */
-public interface InventoryService {
+public interface MailService {
+    void sendEmail(SendEmail sendEmail);
 }

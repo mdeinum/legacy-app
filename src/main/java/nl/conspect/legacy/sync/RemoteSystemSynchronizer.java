@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.service.impl;
+package nl.conspect.legacy.sync;
 
-import nl.conspect.legacy.domain.User;
+import nl.conspect.legacy.user.User;
 import nl.conspect.legacy.util.RemoteSystemClient;
 
 import java.io.IOException;
@@ -25,7 +25,7 @@ public class RemoteSystemSynchronizer {
     public RemoteSystemSynchronizer() {
     }
 
-    void synchronize(final User user) {
+    public void synchronize(final User user) {
 
         Thread syncThread = new Thread(new Runnable() {
             public void run() {

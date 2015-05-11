@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.web;
+package nl.conspect.legacy.user.web;
 
-import nl.conspect.legacy.domain.User;
+import nl.conspect.legacy.user.User;
 
 /**
  * @author marten

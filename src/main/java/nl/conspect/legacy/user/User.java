@@ -14,10 +14,7 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.domain;
-
-import java.util.ArrayList;
-import java.util.List;
+package nl.conspect.legacy.user;
 
 public class User {
 
@@ -26,10 +23,6 @@ public class User {
     private String password;
     private String displayName;
     private String emailAddress;
-
-    private List orders = new ArrayList();
-    private List payments = new ArrayList();
-
 
     public String getDisplayName() {
         return displayName;

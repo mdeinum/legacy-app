@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.domain;
+package nl.conspect.legacy.user;
 
-import nl.conspect.legacy.web.NewUserRegistrationForm;
+import nl.conspect.legacy.user.web.NewUserRegistrationForm;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.repository.impl;
+package nl.conspect.legacy.order;
 
 /**
  * @author marten
  */
-public class JpaOrderRepositoryImpl {
+class JpaOrderRepositoryImpl {
 
 }

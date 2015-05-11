@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.service.impl;
+package nl.conspect.legacy.mail;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -24,7 +24,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
-class SimpleMailService implements nl.conspect.legacy.service.MailService {
+class SimpleMailService implements MailService {
 
     @Override
     public void sendEmail(final SendEmail sendEmail) {
