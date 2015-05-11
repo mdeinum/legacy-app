@@ -22,7 +22,7 @@
         <param name="target" value="System.out" />
         <param name="threshold" value="debug" />
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+            <param name="ConversionPattern" value="%d [%15.15t] %-5p %30.30c %x - %m%n" />
         </layout>
     </appender>
 
@@ -31,7 +31,7 @@
         <param name="append" value="false" />
         <param name="threshold" value="debug" />
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{ISO8601} %-5p [%c{1}] - %m%n" />
+            <param name="ConversionPattern" value="%d [%15.15t] %-5p %30.30c %x - %m%n" />
         </layout>
     </appender>
 
