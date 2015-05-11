@@ -14,27 +14,35 @@
  * limitations under the License.
  */
 
-package nl.conspect.legacy.util;
+package nl.conspect.legacy.service.impl;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.Socket;
+import java.io.Serializable;
 
 /**
- * @author Marten Deinum
+ * @author marten
  */
-public class RemoteSystemClient {
+public class SendEmail implements Serializable {
 
-    public void send(String msg) throws IOException {
-        System.out.println("Sending message to remote system: " + msg);
-        Socket clientSocket = new Socket("localhost", 2345);
-        try {
-            OutputStream out = clientSocket.getOutputStream();
-            DataOutputStream dos = new DataOutputStream(out);
-            dos.writeBytes(msg);
-        } finally {
-            clientSocket.close();
-        }
+    private final String subject;
+    private final String recipient;
+    private final String body;
+
+
+    public SendEmail(String subject, String recipient, String body) {
+        this.subject = subject;
+        this.recipient = recipient;
+        this.body = body;
+    }
+
+    public String getBody() {
+        return body;
+    }
+
+    public String getRecipient() {
+        return recipient;
+    }
+
+    public String getSubject() {
+        return subject;
     }
 }

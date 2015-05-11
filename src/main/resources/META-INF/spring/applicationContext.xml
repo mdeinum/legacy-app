@@ -9,12 +9,20 @@
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
+    <bean id="mailService" class="nl.conspect.legacy.service.impl.SimpleMailService">
+
+    </bean>
+
+    <bean id="remoteSystemSynchronizer" class="nl.conspect.legacy.service.impl.RemoteSystemSynchronizer"></bean>
+
     <bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="proxyInterfaces" value="nl.conspect.legacy.service.UserService" />
         <property name="transactionManager" ref="transactionManager" />
         <property name="target">
             <bean class="nl.conspect.legacy.service.impl.UserServiceImpl">
-                <property name="userRepository" ref="userRepository" />
+                <constructor-arg ref="mailService"/>
+                <constructor-arg ref="remoteSystemSynchronizer" />
+                <constructor-arg ref="userRepository" />
             </bean>
         </property>
         <property name="transactionAttributes">
