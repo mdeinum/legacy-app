@@ -16,37 +16,41 @@
 
 package nl.conspect.legacy.mail;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+
 import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.util.Properties;
 
+@Service
 class SimpleMailService implements MailService {
 
-    @Override
-    public void sendEmail(final SendEmail sendEmail) {
-        Thread mailThread = new Thread(new Runnable() {
-            public void run() {
-                Properties props = new Properties();
-                props.setProperty("mail.smtp.host", "localhost");
-                props.setProperty("mail.smtp.port", "2525");
-                Session session = Session.getInstance(props);
+    private final Logger logger = LoggerFactory.getLogger(SimpleMailService.class);
+    private final JavaMailSender mailSender;
 
-                try {
-                    MimeMessage msg = new MimeMessage(session);
-                    msg.setFrom(new InternetAddress("noreply@ourcompany.io"));
-                    msg.setText(sendEmail.getBody(), "UTF-8");
-                    msg.addRecipients(Message.RecipientType.TO, sendEmail.getRecipient());
-                    msg.setSubject(sendEmail.getSubject());
-                    Transport.send(msg);
-                } catch (MessagingException me) {
-                    throw new RuntimeException(me);
-                }
+    @Autowired
+    SimpleMailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
+    }
+
+    @Override
+    @Async
+    public void sendEmail(final SendEmail sendEmail) {
+        logger.info("Sending mail: {}", sendEmail);
+        this.mailSender.send(new MimeMessagePreparator() {
+            @Override
+            public void prepare(MimeMessage msg) throws Exception {
+                msg.setFrom(new InternetAddress("noreply@ourcompany.io"));
+                msg.setText(sendEmail.getBody());
+                msg.addRecipients(Message.RecipientType.TO, sendEmail.getRecipient());
+                msg.setSubject(sendEmail.getSubject());
             }
         });
-        mailThread.start();
     }
 }

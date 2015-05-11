@@ -16,39 +16,35 @@
 
 package nl.conspect.legacy.user;
 
-import nl.conspect.legacy.mail.MailService;
-import nl.conspect.legacy.mail.SendEmail;
-import nl.conspect.legacy.sync.RemoteSystemSynchronizer;
+import nl.conspect.legacy.event.EventBus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Marten Deinum
  */
+@Transactional
+@Service("userService")
 class UserServiceImpl implements UserService {
 
-    private final MailService mailService;
-    private final RemoteSystemSynchronizer synchronizer;
     private final UserRepository userRepository;
+    private final EventBus eventBus;
 
-    public UserServiceImpl(MailService mailService, RemoteSystemSynchronizer synchronizer, UserRepository userRepository) {
-        this.mailService = mailService;
-        this.synchronizer = synchronizer;
+    @Autowired
+    UserServiceImpl(UserRepository userRepository, EventBus eventBus) {
         this.userRepository = userRepository;
+        this.eventBus = eventBus;
     }
 
     public void save(User user) {
         this.userRepository.save(user);
-        this.sendEmail(user);
-        this.synchronizer.synchronize(user);
-    }
-
-    private void sendEmail(User user) {
-        String body = "Welcome new user: " + user.getDisplayName();
-        this.mailService.sendEmail(new SendEmail("New User", user.getEmailAddress(), body));
+        eventBus.emit(new NewUserCreated(user));
     }
 
     public void update(User user) {
         this.userRepository.save(user);
-        this.synchronizer.synchronize(user);
+        eventBus.emit(new UserUpdated(user));
     }
 
     public User login(String username, String password) {

@@ -1,36 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="classpath:/META-INF/spring/infrastructure-context.xml" />
+    <import resource="classpath:/META-INF/spring/infrastructure-context.xml"/>
 
-    <bean id="userRepository" class="nl.conspect.legacy.user.HibernateUserRepositoryImpl">
-        <property name="sessionFactory" ref="sessionFactory" />
-    </bean>
+    <context:component-scan base-package="nl.conspect.legacy.user,nl.conspect.legacy.event,nl.conspect.legacy.mail"/>
 
-    <bean id="mailService" class="nl.conspect.legacy.mail.SimpleMailService">
-
-    </bean>
-
-    <bean id="remoteSystemSynchronizer" class="nl.conspect.legacy.sync.RemoteSystemSynchronizer"></bean>
-
-    <bean id="userService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-        <property name="proxyInterfaces" value="nl.conspect.legacy.user.UserService" />
-        <property name="transactionManager" ref="transactionManager" />
-        <property name="target">
-            <bean class="nl.conspect.legacy.user.UserServiceImpl">
-                <constructor-arg ref="mailService"/>
-                <constructor-arg ref="remoteSystemSynchronizer" />
-                <constructor-arg ref="userRepository" />
-            </bean>
-        </property>
-        <property name="transactionAttributes">
-            <props>
-                <prop key="*">PROPAGATION_REQUIRED</prop>
-            </props>
-        </property>
-    </bean>
-
+    <bean class="nl.conspect.legacy.util.RemoteSystemClient"/>
 
 </beans>

@@ -16,15 +16,24 @@
 
 package nl.conspect.legacy.user;
 
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Created by marten on 17-04-15.
  */
+@Repository
 class HibernateUserRepositoryImpl extends HibernateDaoSupport implements UserRepository {
+
+    @Autowired
+    HibernateUserRepositoryImpl(SessionFactory sf) {
+        super.setSessionFactory(sf);
+    }
 
     public void save(User user) {
         getHibernateTemplate().saveOrUpdate(user);
