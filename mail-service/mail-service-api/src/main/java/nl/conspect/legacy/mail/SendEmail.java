@@ -44,4 +44,9 @@ public class SendEmail implements Serializable {
     public String getSubject() {
         return subject;
     }
+
+    @Override
+    public String toString() {
+        return "SendEmail[subject='"+this.subject + "', recipient='"+this.recipient + "']";
+    }
 }

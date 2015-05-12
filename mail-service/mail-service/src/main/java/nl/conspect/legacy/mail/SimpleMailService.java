@@ -28,7 +28,7 @@ import javax.mail.Message;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-@Service
+@Service("mailService")
 class SimpleMailService implements MailService {
 
     private final Logger logger = LoggerFactory.getLogger(SimpleMailService.class);

@@ -94,7 +94,7 @@ public class UserServiceIntegrationTest extends AbstractTransactionalJUnit4Sprin
 
         userService.update(user);
 
-        Thread.sleep(100);
+        Thread.sleep(250);
 
         int count = countRowsInTable("user");
         assertEquals(1, count);

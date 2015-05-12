@@ -2,14 +2,45 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:integration="http://www.springframework.org/schema/integration"
        xsi:schemaLocation="
             http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+            http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
 
     <import resource="classpath:/META-INF/spring/infrastructure-context.xml"/>
 
     <context:component-scan base-package="nl.conspect.legacy.user,nl.conspect.legacy.event,nl.conspect.legacy.mail"/>
 
     <bean class="nl.conspect.legacy.util.RemoteSystemClient"/>
+
+
+    <!--
+    <bean id="mailService" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
+        <property name="serviceInterface" value="nl.conspect.legacy.mail.MailService" />
+        <property name="serviceUrl" value="http://localhost:8090/mail/mailService" />
+    </bean>
+    -->
+
+    <bean id="connectionFactory" class="org.apache.activemq.spring.ActiveMQConnectionFactory">
+        <property name="brokerURL" value="tcp://localhost:61616" />
+    </bean>
+
+    <integration:gateway id="mailService" service-interface="nl.conspect.legacy.mail.MailService" default-request-channel="sendMail" async-executor="taskExecutor" />
+    <jms:outbound-channel-adapter id="sendMail" connection-factory="connectionFactory" destination-name="sendMail" message-converter="messageConverter"/>
+
+    <bean id="messageConverter" class="org.springframework.jms.support.converter.MarshallingMessageConverter">
+        <constructor-arg>
+            <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
+                <property name="aliases">
+                    <map>
+                        <entry key="sendEmail" value="nl.conspect.legacy.mail.SendEmail" />
+                    </map>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
 
 </beans>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jms="http://www.springframework.org/schema/integration/jms"
+       xmlns:integration="http://www.springframework.org/schema/integration"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+            http://www.springframework.org/schema/integration/jms http://www.springframework.org/schema/integration/jms/spring-integration-jms.xsd">
+
+    <integration:channel id="sendMailChannel"/>
+    <jms:message-driven-channel-adapter channel="sendMailChannel" connection-factory="jmsConnectionFactory"
+                                        destination-name="sendMail" message-converter="messageConverter"/>
+    <integration:service-activator input-channel="sendMailChannel" ref="mailService" method="sendEmail"/>
+
+    <bean id="messageConverter" class="org.springframework.jms.support.converter.MarshallingMessageConverter">
+        <constructor-arg>
+            <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
+                <property name="aliases">
+                    <map>
+                        <entry key="sendEmail" value="nl.conspect.legacy.mail.SendEmail" />
+                    </map>
+                </property>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+</beans>
