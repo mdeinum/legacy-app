@@ -77,6 +77,8 @@ public class UserServiceIntegrationTest extends AbstractTransactionalJUnit4Sprin
 
         MimeMessage[] mimeMessages = greenMail.getReceivedMessages();
         assertEquals(1, mimeMessages.length);
+        MimeMessage msg = mimeMessages[0];
+        assertEquals("Welcome new user: Foo Bar\r\n", msg.getContent());
 
         assertEquals("username:foobar|email:foo@somewhere.org$", emulator.getReceived());
     }
