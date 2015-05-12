@@ -12,10 +12,9 @@
 
     <import resource="classpath:/META-INF/spring/infrastructure-context.xml"/>
 
-    <context:component-scan base-package="nl.conspect.legacy.user,nl.conspect.legacy.event,nl.conspect.legacy.mail"/>
+    <context:component-scan base-package="nl.conspect.legacy.user,nl.conspect.legacy.event"/>
 
     <bean class="nl.conspect.legacy.util.RemoteSystemClient"/>
-
 
     <!--
     <bean id="mailService" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
