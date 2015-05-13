@@ -2,26 +2,18 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <bean id="newUserController" class="nl.conspect.legacy.web.UserController">
-        <constructor-arg ref="userService"/>
-        <property name="commandName" value="user" />
-        <property name="commandClass" value="nl.conspect.legacy.web.NewUserRegistrationForm" />
-        <property name="validateOnBinding" value="true"/>
-        <property name="validator">
-            <bean class="nl.conspect.legacy.domain.UserValidator"/>
-        </property>
-        <property name="formView" value="newuser" />
-        <property name="successView" value="newuser-success" />
-    </bean>
+    <context:component-scan base-package="nl.conspect.legacy.web"/>
+    <mvc:annotation-driven />
 
     <bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="defaultHandler" ref="defaultController" />
         <property name="mappings">
             <props>
                 <prop key="/">indexController</prop>
-                <prop key="/newuser">newUserController</prop>
                 <prop key="/login">loginController</prop>
                 <prop key="/logout">logoutController</prop>
             </props>

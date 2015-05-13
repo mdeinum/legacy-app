@@ -17,21 +17,60 @@
 package nl.conspect.legacy.web;
 
 import nl.conspect.legacy.domain.User;
+import nl.conspect.legacy.domain.UserValidator;
 import nl.conspect.legacy.service.UserService;
-import org.springframework.web.bind.ServletRequestDataBinder;
-import org.springframework.web.servlet.mvc.SimpleFormController;
-
-import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * @author Marten Deinum
  */
-public class UserController extends SimpleFormController {
+@Controller
+@RequestMapping("/newuser")
+public class UserController {
 
     private final UserService userService;
 
+    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
+    }
+
+    @ModelAttribute("user")
+    public NewUserRegistrationForm formBackingObject() {
+        return new NewUserRegistrationForm();
+    }
+
+    @RequestMapping(method= RequestMethod.GET)
+    public String index() {
+        return "newuser";
+    }
+
+    @RequestMapping(method=RequestMethod.POST)
+    public String newuser(@ModelAttribute("user") NewUserRegistrationForm form, BindingResult errors) {
+        if (errors.hasErrors()) {
+            return "newuser";
+        } else {
+            User user = new User();
+            user.setPassword(form.getPassword());
+            user.setDisplayName(form.getDisplayName());
+            user.setEmailAddress(form.getEmailAddress());
+            user.setUsername(form.getUsername());
+            userService.save(user);
+            return "newuser-success";
+        }
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder webDataBinder) {
+        webDataBinder.setDisallowedFields("id");
+        webDataBinder.setValidator(new UserValidator());
     }
 
     protected void doSubmitAction(Object command) throws Exception {
@@ -45,8 +84,4 @@ public class UserController extends SimpleFormController {
         userService.save(user);
     }
 
-    @Override
-    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
-        binder.setDisallowedFields("id");
-    }
 }

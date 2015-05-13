@@ -30,7 +30,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -39,6 +38,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 /**
  * @author marten
@@ -70,8 +71,9 @@ public class UserControllerIntegrationTest extends AbstractJUnit4SpringContextTe
                         .param("displayName", "Foo Bar")
                         .param("emailAddress", "foo@somewhere.org")
                         .param("emailValidation", "foo@somewhere.org")
-                        .param("passwordValidation", "password")
-        ).andExpect(MockMvcResultMatchers.model().hasNoErrors());
+                        .param("passwordValidation", "password"))
+                    .andExpect(model().hasNoErrors())
+                .andExpect(view().name("newuser-success"));
 
         ArgumentCaptor<User> argumentCaptor = ArgumentCaptor.forClass(User.class);
 
