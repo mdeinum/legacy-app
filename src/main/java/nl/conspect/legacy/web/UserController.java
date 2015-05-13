@@ -18,7 +18,10 @@ package nl.conspect.legacy.web;
 
 import nl.conspect.legacy.domain.User;
 import nl.conspect.legacy.service.UserService;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.SimpleFormController;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Marten Deinum
@@ -42,4 +45,8 @@ public class UserController extends SimpleFormController {
         userService.save(user);
     }
 
+    @Override
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+        binder.setDisallowedFields("id");
+    }
 }
